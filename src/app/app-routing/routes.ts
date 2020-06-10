@@ -24,6 +24,10 @@ export const routes: Routes = [
         component: DishdetailComponent
     },
     {
+        path: 'aboutus',
+        component: AboutComponent
+    }
+    {
         path: '',
         redirectTo: '/home',
         pathMatch: 'full'
