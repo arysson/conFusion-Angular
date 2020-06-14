@@ -26,7 +26,7 @@ export const routes: Routes = [
     {
         path: 'aboutus',
         component: AboutComponent
-    }
+    },
     {
         path: '',
         redirectTo: '/home',
