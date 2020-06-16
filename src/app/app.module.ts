@@ -26,6 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { DishService } from './services/dish.service';
 import { LeaderService } from './services/leader.service';
+import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 import { PromotionService } from './services/promotion.service';
 
 import { AboutComponent } from './about/about.component';
@@ -75,6 +76,7 @@ import { MenuComponent } from './menu/menu.component';
   providers: [
     DishService,
     LeaderService,
+    ProcessHTTPMsgService,
     PromotionService,
     {
       provide: 'BaseURL',
