@@ -1,10 +1,13 @@
 import 'hammerjs';
 
+import { baseURL } from './shared/baseurl';
+
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -53,6 +56,7 @@ import { MenuComponent } from './menu/menu.component';
     BrowserModule,
     FlexLayoutModule,
     FormsModule,
+    HttpClientModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
@@ -71,7 +75,11 @@ import { MenuComponent } from './menu/menu.component';
   providers: [
     DishService,
     LeaderService,
-    PromotionService
+    PromotionService,
+    {
+      provide: 'BaseURL',
+      useValue: baseURL
+    }
   ],
   entryComponents: [LoginComponent],
   bootstrap: [AppComponent]
