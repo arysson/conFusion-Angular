@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgModule } from '@angular/core';
@@ -62,6 +63,7 @@ import { MenuComponent } from './menu/menu.component';
     MatListModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatSliderModule,
     MatSlideToggleModule,
     MatToolbarModule,
     ReactiveFormsModule
