@@ -38,6 +38,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { MenuComponent } from './menu/menu.component';
+import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { MenuComponent } from './menu/menu.component';
     HeaderComponent,
     HomeComponent,
     LoginComponent,
-    MenuComponent
+    MenuComponent,
+    HighlightDirective
   ],
   imports: [
     AppRoutingModule,
