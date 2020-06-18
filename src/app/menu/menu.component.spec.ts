@@ -75,7 +75,6 @@ describe('MenuComponent', () => {
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('h1'));
     el = de.nativeElement;
-    console.log(el.textContent);
     expect(el.textContent).toContain(DISHES[0].name.toUpperCase());
   });
 });
