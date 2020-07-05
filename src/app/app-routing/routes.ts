@@ -5,6 +5,8 @@ import { DishdetailComponent } from '../dishdetail/dishdetail.component';
 import { HomeComponent } from '../home/home.component';
 import { AboutComponent } from '../about/about.component';
 import { ContactComponent } from '../contact/contact.component';
+import { AuthGuardService } from '../services/auth-guard.service';
+import { FavoritesComponent } from '../favorites/favorites.component';
 
 export const routes: Routes = [
     {
@@ -26,6 +28,11 @@ export const routes: Routes = [
     {
         path: 'aboutus',
         component: AboutComponent
+    },
+    {
+        path: 'favorites',
+        component: FavoritesComponent,
+        canActivate: [AuthGuardService]
     },
     {
         path: '',

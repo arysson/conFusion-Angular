@@ -10,7 +10,7 @@ $background-moredark: #4527A0;
 }
 
 .jumbotron {
-    @include zero-margin(70px, 10px);
+    @include zero-margin(70px, 30px);
     background: $background-light;
     color: floralwhite;
     min-height: 150px;

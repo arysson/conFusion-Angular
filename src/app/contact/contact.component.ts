@@ -8,7 +8,7 @@ import { FeedbackService } from '../services/feedback.service';
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
-  // tsling:disable-next-line:use-host-property-decorator
+  // tslint:disable-next-line:use-host-property-decorator
   host: {
     '[@flyInOut]': 'true',
     'style': 'display: block;'

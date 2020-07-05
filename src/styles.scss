@@ -3,6 +3,19 @@
 @import 'variables';
 @import '../node_modules/font-awesome/scss/font-awesome';
 
+// some basic resets
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: Roboto, sans-serif;
+}
+
+.container {
+    margin: 20px;
+    display: flex;
+}
+
 $lt-gray: #ddd;
 $background-dark: #512DA8;
 $background-light: #9575CD;
@@ -19,19 +32,6 @@ $divider-color: #BDBDBD;
 @mixin zero-margin($pad-up-down, $pad-left-right) {
     margin: 0px auto;
     padding: $pad-up-down $pad-left-right;
-}
-
-// some basic resets
-
-body {
-    padding: 0;
-    margin: 0;
-    font-family: Roboto, sans-serif;
-}
-
-.container {
-    margin: 20px;
-    display: flex;
 }
 
 .background-primary {

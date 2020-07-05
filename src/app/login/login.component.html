@@ -3,7 +3,10 @@
   <span class="flex-spacer"></span>
   <button mat-button mat-dialog-close>&times;</button>
 </mat-toolbar>
-<p>{{ user | json }}</p>
+<div *ngIf="errMess">
+  <h2>Error</h2>
+  <h4>{{ errMess }}</h4>
+</div>
 <form novalidate #loginForm="ngForm" (ngSubmit)="onSubmit()">
   <mat-dialog-content>
     <p>
@@ -27,7 +30,7 @@
   <mat-dialog-actions>
     <span class="flex-spacer"></span>
     <button mat-button mat-dialog-close>
-      Close
+      Cancel
     </button>
     <button type="submit" mat-button class="background-primary text-floral-white" [disabled]="loginForm.form.invalid">
       Login

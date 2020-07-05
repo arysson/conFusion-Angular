@@ -7,7 +7,7 @@ import { flyInOut, expand } from '../animations/app.animation';
   selector: 'app-about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],
-  // tsling:disable-next-line:use-host-property-decorator
+  // tslint:disable-next-line:use-host-property-decorator
   host: {
     '[@flyInOut]': 'true',
     'style': 'display: block;'
@@ -19,8 +19,8 @@ import { flyInOut, expand } from '../animations/app.animation';
 })
 export class AboutComponent implements OnInit {
 
-  leaders: Leader[]
-  errMess: string
+  leaders: Leader[];
+  errMess: string;
   
   constructor(
     private leaderService: LeaderService,

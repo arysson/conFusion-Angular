@@ -22,7 +22,7 @@
           <mat-card-content>
             <dl>
               <dt>Started</dt>
-              <dd>3 feb. 2013</dd>
+              <dd>3 Feb. 2013</dd>
               <dt>Major Stake Holder</dt>
               <dd>HK Fine Foods Inc.</dd>
               <dt>Last Year's Turnover</dt>
@@ -46,14 +46,14 @@
       </blockquote>
     </mat-card>
   </div>
-  <div fxFlex *ngIf="leaders" [@expand]>
+  <div fxFlex>
     <h2>Corporate Leadership</h2>
-    <mat-list>
+    <mat-list *ngIf="leaders" [@expand]>
       <mat-list-item *ngFor="let leader of leaders">
         <img mat-list-avatar src="{{ baseURL + leader.image }}" alt="{{ leader.name }}">
-        <p mat-line>{{ leader.name }} {{ leader.abbr }}</p>
-        <p mat-line>{{ leader.designation }}</p>
-        <p mat-line>{{ leader.description }}</p>
+        <h4 matLine>{{ leader.name }} {{ leader.abbr }}</h4>
+        <p matLine>{{ leader.designation }}</p>
+        <p matLine>{{ leader.description }}</p>
       </mat-list-item>
     </mat-list>
   </div>

@@ -7,7 +7,7 @@ import { flyInOut, expand } from '../animations/app.animation';
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-  // tsling:disable-next-line:use-host-property-decorator
+  // tslint:disable-next-line:use-host-property-decorator
   host: {
     '[@flyInOut]': 'true',
     'style': 'display: block;'
@@ -21,6 +21,7 @@ export class MenuComponent implements OnInit {
 
   dishes: Dish[];
   errMess: string;
+  selectedDish: Dish;
 
   constructor(
     private dishService: DishService, 
@@ -33,5 +34,9 @@ export class MenuComponent implements OnInit {
         dishes => this.dishes = dishes,
         errmess => this.errMess = <any>errmess
       );
+  }
+
+  onSelect(dish: Dish) {
+    this.selectedDish = dish;
   }
 }

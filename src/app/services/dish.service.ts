@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Dish } from '../shared/dish';
-import { DISHES } from '../shared/dishes';
-import { Observable, of } from 'rxjs';
-import { delay, map, catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { baseURL } from '../shared/baseurl';
 import { ProcessHTTPMsgService } from './process-httpmsg.service';
@@ -22,7 +21,7 @@ export class DishService {
       .pipe(catchError(this.processHTTPMsgService.handleError));
   }
 
-  getDish(id: number): Observable<Dish> {
+  getDish(id: string): Observable<Dish> {
     return this.http.get<Dish>(baseURL + 'dishes/' + id)
       .pipe(catchError(this.processHTTPMsgService.handleError));
   }
@@ -35,8 +34,13 @@ export class DishService {
 
   getDishIds(): Observable<number[] | any> {
     return this.getDishes()
-      .pipe(map(dishes => dishes.map(dish => dish.id)))
+      .pipe(map(dishes => dishes.map(dish => dish._id)))
       .pipe(catchError(error => error));
+  }
+
+  postComment(dishId: string, comment: any) {
+    return this.http.post(baseURL + 'dishes/' + dishId + '/comments', comment)
+      .pipe(catchError(this.processHTTPMsgService.handleError));
   }
 
   putDish(dish: Dish): Observable<Dish> {
@@ -46,7 +50,7 @@ export class DishService {
       })
     };
 
-    return this.http.put<Dish>(baseURL + 'dishes/' + dish.id, dish, httpOptions)
+    return this.http.put<Dish>(baseURL + 'dishes/' + dish._id, dish, httpOptions)
       .pipe(catchError(this.processHTTPMsgService.handleError));
   }
 }

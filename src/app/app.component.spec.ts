@@ -1,11 +1,55 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+
+import { HeaderComponent } from './header/header.component';
+import { AppRoutingModule } from './app-routing/app-routing.module';
+import { HomeComponent } from './home/home.component';
+import { MenuComponent } from './menu/menu.component';
+import { ContactComponent } from './contact/contact.component';
+import { DishdetailComponent } from './dishdetail/dishdetail.component';
+import { AboutComponent } from './about/about.component';
+import { FooterComponent } from './footer/footer.component';
+
+import { MatToolbarModule, MatCardModule, MatProgressSpinnerModule, MatGridListModule, MatFormFieldModule, MatSlideToggleModule, MatSelectModule, MatListModule, MatSliderModule, MatDialogModule } from '@angular/material';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FavoritesComponent } from './favorites/favorites.component';
+import { HttpClientModule } from '@angular/common/http';
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        HeaderComponent,
+        HomeComponent,
+        MenuComponent,
+        ContactComponent,
+        DishdetailComponent,
+        AboutComponent,
+        FooterComponent,
+        FavoritesComponent
       ],
+      imports: [
+        AppRoutingModule,
+        MatToolbarModule,
+        MatCardModule,
+        MatProgressSpinnerModule,
+        MatGridListModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSlideToggleModule,
+        MatSelectModule,
+        MatListModule,
+        MatSliderModule,
+        RouterTestingModule.withRoutes([{
+          path: '',
+          component: AppComponent
+        }]),
+        MatDialogModule,
+        FormsModule,
+        HttpClientModule
+      ]
     }).compileComponents();
   }));
   it('should create the app', async(() => {
@@ -22,6 +66,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to conFusion!');
+    expect(compiled.querySelector('h1').textContent).toContain('Ristorante Con Fusion');
   }));
 });

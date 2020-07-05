@@ -7,7 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -39,6 +39,12 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { MenuComponent } from './menu/menu.component';
 import { HighlightDirective } from './directives/highlight.directive';
+import { FeedbackService } from './services/feedback.service';
+import { FavoritesComponent } from './favorites/favorites.component';
+import { AuthService } from './services/auth.service';
+import { AuthGuardService } from './services/auth-guard.service';
+import { FavoriteService } from './services/favorite.service';
+import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -51,7 +57,8 @@ import { HighlightDirective } from './directives/highlight.directive';
     HomeComponent,
     LoginComponent,
     MenuComponent,
-    HighlightDirective
+    HighlightDirective,
+    FavoritesComponent
   ],
   imports: [
     AppRoutingModule,
@@ -76,13 +83,27 @@ import { HighlightDirective } from './directives/highlight.directive';
     ReactiveFormsModule
   ],
   providers: [
+    AuthService,
+    AuthGuardService,
     DishService,
+    FavoriteService,
+    FeedbackService,
     LeaderService,
     ProcessHTTPMsgService,
     PromotionService,
     {
       provide: 'BaseURL',
       useValue: baseURL
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
+      multi: true
     }
   ],
   entryComponents: [LoginComponent],

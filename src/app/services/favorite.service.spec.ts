@@ -1,19 +1,19 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { PromotionService } from './promotion.service';
+import { FavoriteService } from './favorite.service';
 import { HttpClientModule } from '@angular/common/http';
 
-describe('PromotionService', () => {
+describe('FavoriteService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
       HttpClientModule
     ],
     providers: [
-      PromotionService
+      FavoriteService
     ]
   }));
 
-  it('should be created', inject([PromotionService], (service: PromotionService) => {
+  it('should be created', inject([FavoriteService], (service: FavoriteService) => {
     expect(service).toBeTruthy();
   }));
 });
