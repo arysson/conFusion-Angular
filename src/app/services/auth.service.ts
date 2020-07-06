@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { ProcessHTTPMsgService } from './process-httpmsg.service';
 import { baseURL } from '../shared/baseurl';
 import { catchError, map } from 'rxjs/operators';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { ThrowStmt } from '@angular/compiler';
+import * as firebase from 'firebase/app';
 
 interface AuthResponse {
   status: string;
@@ -22,92 +25,37 @@ interface JWTResponse {
 })
 export class AuthService {
 
-  tokenKey = 'JWT';
-  isAuthenticated: Boolean = false;
-  username: Subject<string> = new Subject<string>();
-  authToken: string = undefined;
+  private authState: Observable<firebase.User>;
+  private currentUser: firebase.User = null;
 
-  constructor(private http: HttpClient, private processHTTPMsgService: ProcessHTTPMsgService) { }
-
-  checkJWTtoken() {
-    this.http.get<JWTResponse>(baseURL + 'users/checkJWTtoken').subscribe(res => {
-      console.log('JWT Token Valid:', res);
-      this.sendUsername(res.user.username);
-    }, err => {
-      console.log('JWT Token invalid:', err);
-      this.destroyUserCredentials();
+  constructor(public afAuth: AngularFireAuth) { 
+    this.authState = this.afAuth.authState;
+    this.authState.subscribe(user => {
+      if (user) {
+        this.currentUser = user;
+      } else {
+        this.currentUser = null;
+      }
     });
   }
 
-  destroyUserCredentials() {
-    this.authToken = undefined;
-    this.clearUsername();
-    this.isAuthenticated = false;
-    localStorage.removeItem(this.tokenKey);
-  }
-
-  clearUsername() {
-    this.username.next(undefined);
-  }
-
-  sendUsername(name: string) {
-    this.username.next(name);
-  }
-
-  loadUserCredentials() {
-    const credentials = JSON.parse(localStorage.getItem(this.tokenKey));
-    console.log('loadUserCredentials', credentials);
-    if (credentials && credentials.username !== undefined) {
-      this.useCredentials(credentials);
-      if (this.authToken) {
-        this.checkJWTtoken();
-      }
-    }
-  }
-
-  useCredentials(credentials: any) {
-    this.isAuthenticated = true;
-    this.sendUsername(credentials.username);
-    this.authToken = credentials.token;
-  }
-
-  storeUserCredentials(credentials: any) {
-    console.log('storeUserCredentials', credentials);
-    localStorage.setItem(this.tokenKey, JSON.stringify(credentials));
-    this.useCredentials(credentials);
+  getAuthState() {
+    return this.authState;
   }
 
   signUp() {}
 
-  logIn(user: any): Observable<any> {
-    return this.http.post<AuthResponse>(baseURL + 'users/login', {
-      'username': user.username,
-      'password': user.password
-    }).pipe(map(res => {
-      this.storeUserCredentials({
-        username: user.username,
-        token: res.token
-      });
-      return {
-        'success': true,
-        'username': user.username
-      };
-    }), catchError(error => this.processHTTPMsgService.handleError(error)));
+  logIn(user: any) {
+    this.afAuth.auth.signInWithEmailAndPassword(user.username, user.password).then(res => console.log(res)).catch(function(error) {
+      // Handle Errors here.
+    });
   }
 
   logOut() {
-    this.destroyUserCredentials();
+    this.afAuth.auth.signOut();
   }
-
-  isLoggedIn(): Boolean {
-    return this.isAuthenticated;
-  }
-
-  getUsername(): Observable<string> {
-    return this.username.asObservable();
-  }
-
-  getToken(): string {
-    return this.authToken;
+  
+  googleLogin() {
+    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
 }

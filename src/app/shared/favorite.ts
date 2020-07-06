@@ -8,3 +8,8 @@ export class Favorite {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface FavDish {
+    user: string;
+    dish: string;
+}

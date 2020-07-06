@@ -7,10 +7,21 @@ import { AuthService } from './auth.service';
 })
 export class AuthGuardService implements CanActivate {
 
-  constructor(public auth: AuthService, public router: Router) { }
+  private currentUser: firebase.User = null;
+
+  constructor(public auth: AuthService, public router: Router) { 
+    this.auth.getAuthState().subscribe(user => {
+      if (user) {
+        // User is signed in.
+        this.currentUser = user;
+      } else {
+        this.currentUser = null;
+      }
+    });
+  }
 
   canActivate(): boolean {
-    if (!this.auth.isLoggedIn()) {
+    if (!this.currentUser) {
       this.router.navigate(['home']);
       return false;
     }
