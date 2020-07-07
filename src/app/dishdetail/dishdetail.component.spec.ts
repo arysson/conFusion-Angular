@@ -5,8 +5,11 @@ import { MatCardModule, MatListModule, MatFormFieldModule, MatSliderModule, MatP
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { baseURL } from '../shared/baseurl';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from 'src/environments/environment';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 describe('DishdetailComponent', () => {
   let component: DishdetailComponent;
@@ -29,13 +32,10 @@ describe('DishdetailComponent', () => {
         MatSliderModule,
         MatProgressSpinnerModule,
         HttpClientModule,
-        BrowserAnimationsModule
-      ],
-      providers: [
-        {
-          provide: 'BaseURL',
-          useValue: baseURL
-        }
+        BrowserAnimationsModule,
+        AngularFirestoreModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule
       ]
     })
     .compileComponents();

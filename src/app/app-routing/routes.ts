@@ -31,8 +31,8 @@ export const routes: Routes = [
     },
     {
         path: 'favorites',
-        component: FavoritesComponent,
-        canActivate: [AuthGuardService]
+        // canActivate: [AuthGuardService],
+        component: FavoritesComponent
     },
     {
         path: '',

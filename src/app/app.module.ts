@@ -1,7 +1,5 @@
 import 'hammerjs';
 
-import { baseURL } from './shared/baseurl';
-
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,7 +24,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { DishService } from './services/dish.service';
 import { LeaderService } from './services/leader.service';
-import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 import { PromotionService } from './services/promotion.service';
 
 import { AboutComponent } from './about/about.component';
@@ -39,12 +36,14 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { MenuComponent } from './menu/menu.component';
 import { HighlightDirective } from './directives/highlight.directive';
-import { FeedbackService } from './services/feedback.service';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { FavoriteService } from './services/favorite.service';
-import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interceptor';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from 'src/environments/environment';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 @NgModule({
   declarations: [
@@ -61,6 +60,9 @@ import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interc
     FavoritesComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule.enablePersistence(),
+    AngularFireAuthModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
@@ -87,24 +89,8 @@ import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interc
     AuthGuardService,
     DishService,
     FavoriteService,
-    FeedbackService,
     LeaderService,
-    ProcessHTTPMsgService,
-    PromotionService,
-    {
-      provide: 'BaseURL',
-      useValue: baseURL
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: UnauthorizedInterceptor,
-      multi: true
-    }
+    PromotionService
   ],
   entryComponents: [LoginComponent],
   bootstrap: [AppComponent]

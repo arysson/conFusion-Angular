@@ -22,21 +22,14 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('User: ', this.user);
-    this.authService.logIn(this.user)
-      .subscribe(
-        res => {
-          if (res.success) {
-            this.dialogRef.close(res.success);
-          } else {
-            console.log(res);
-          }
-        },
-        error => {
-          console.log(error);
-          this.errMess = error;
-        }
-      );
+    console.log('User:', this.user);
+    this.authService.logIn(this.user);
+    this.dialogRef.close();
+  }
+
+  googleLogin() {
+    this.authService.googleLogin();
+    this.dialogRef.close();
   }
 
 }

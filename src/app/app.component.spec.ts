@@ -15,6 +15,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from 'src/environments/environment';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -48,7 +51,9 @@ describe('AppComponent', () => {
         }]),
         MatDialogModule,
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        AngularFireAuthModule,
+        AngularFireModule.initializeApp(environment.firebase)
       ]
     }).compileComponents();
   }));

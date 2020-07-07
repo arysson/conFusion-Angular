@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { ProcessHTTPMsgService } from './process-httpmsg.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { Favorite, FavDish } from '../shared/favorite';
-import { baseURL } from '../shared/baseurl';
-import { catchError } from 'rxjs/operators';
-import { FavoriteExists } from '../shared/favoriteExists';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 
@@ -34,7 +30,7 @@ export class FavoriteService {
     if (this.userId) {
       return this.afs.collection<FavDish>('favorites', ref => ref.where('user', '==', this.userId)).valueChanges();
     } else {
-      return Observable.throw(new Error('No User Logged In!'));
+      return throwError(new Error('No User Logged In!'));
     }
   }
 

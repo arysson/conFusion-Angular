@@ -3,6 +3,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HeaderComponent } from './header.component';
 import { MatToolbarModule, MatDialogModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from 'src/environments/environment';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -14,7 +17,9 @@ describe('HeaderComponent', () => {
       imports: [
         MatToolbarModule,
         MatDialogModule,
-        HttpClientModule
+        HttpClientModule,
+        AngularFireAuthModule,
+        AngularFireModule.initializeApp(environment.firebase)
       ]
     })
     .compileComponents();

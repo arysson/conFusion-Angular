@@ -7,7 +7,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { Dish } from '../shared/dish';
 import { DishService } from '../services/dish.service';
 import { DISHES } from '../shared/dishes';
-import { baseURL } from '../shared/baseurl';
 import { Observable , of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
@@ -41,10 +40,6 @@ describe('MenuComponent', () => {
         {
           provide: DishService,
           useValue: dishServiceStub
-        },
-        {
-          provide: 'BaseURL',
-          useValue: baseURL
         }
       ]
     })

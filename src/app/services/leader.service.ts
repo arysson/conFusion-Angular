@@ -2,33 +2,37 @@ import { Injectable } from '@angular/core';
 import { Leader } from '../shared/leader';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { ProcessHTTPMsgService } from './process-httpmsg.service';
-import { baseURL } from '../shared/baseurl';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { identifierModuleUrl } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeaderService {
 
-  constructor(
-    private http: HttpClient,
-    private processHTTPMsgService: ProcessHTTPMsgService
-  ) { }
+  constructor(private afs: AngularFirestore) { }
 
   getLeaders(): Observable<Leader[]> {
-    return this.http.get<Leader[]>(baseURL + 'leaders')
-      .pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.afs.collection<Leader>('leaders').snapshotChanges().pipe(map(actions => actions.map(action => {
+      const data = action.payload.doc.data() as Leader;
+      const _id = action.payload.doc.id;
+      return { _id, ... data };
+    })));
   }
 
   getLeader(id: string): Observable<Leader> {
-    return this.http.get<Leader>(baseURL + 'leaders/' + id)
-      .pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.afs.doc<Leader>('leaders/' + id).snapshotChanges().pipe(map(action => {
+      const data = action.payload.data() as Leader;
+      const _id = action.payload.id;
+      return { _id, ... data };
+    }));
   }
 
   getFeaturedLeader(): Observable<Leader> {
-    return this.http.get<Leader[]>(baseURL + 'leaders?featured=true')
-      .pipe(map(leaders => leaders[0]))
-      .pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.afs.collection<Leader>('leaders', ref => ref.where('featured', '==', true)).snapshotChanges().pipe(map(actions => actions.map(action => {
+      const data = action.payload.doc.data() as Leader;
+      const _id = action.payload.doc.id;
+      return { _id, ... data };
+    })[0]));
   }
 }

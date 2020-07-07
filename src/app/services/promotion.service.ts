@@ -2,33 +2,36 @@ import { Injectable } from '@angular/core';
 import { Promotion } from '../shared/promotion';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { baseURL } from '../shared/baseurl';
-import { ProcessHTTPMsgService } from './process-httpmsg.service';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PromotionService {
 
-  constructor(
-    private http: HttpClient,
-    private processHTTPMsgService: ProcessHTTPMsgService
-  ) { }
+  constructor(private afs: AngularFirestore) { }
 
   getPromotions(): Observable<Promotion[]> {
-    return this.http.get<Promotion[]>(baseURL + 'promotions')
-      .pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.afs.collection<Promotion>('promotion').snapshotChanges().pipe(map(actions => actions.map(action => {
+      const data = action.payload.doc.data() as Promotion;
+      const _id = action.payload.doc.id;
+      return { _id, ... data };
+    })));
   }
 
   getPromotion(id: string): Observable<Promotion> {
-    return this.http.get<Promotion>(baseURL + 'promotions/' + id)
-      .pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.afs.doc<Promotion>('promotions/' + id).snapshotChanges().pipe(map(action => {
+      const data = action.payload.data() as Promotion;
+      const _id = action.payload.id;
+      return { _id, ... data };
+    }));
   }
 
   getFeaturedPromotion(): Observable<Promotion> {
-    return this.http.get<Promotion[]>(baseURL + 'promotions?featured=true')
-      .pipe(map(promotions => promotions[0]))
-      .pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.afs.collection<Promotion>('promotions', ref => ref.where('featured', '==', true)).snapshotChanges().pipe(map(actions => actions.map(action => {
+      const data = action.payload.doc.data() as Promotion;
+      const _id = action.payload.doc.id;
+      return { _id, ... data };
+    })[0]));
   }
 }

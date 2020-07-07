@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { flyInOut, expand } from '../animations/app.animation';
-import { Favorite } from '../shared/favorite';
+import { Favorite, FavDish } from '../shared/favorite';
 import { FavoriteService } from '../services/favorite.service';
+import { DishService } from '../services/dish.service';
 
 @Component({
   selector: 'app-favorites',
@@ -19,29 +20,29 @@ import { FavoriteService } from '../services/favorite.service';
 })
 export class FavoritesComponent implements OnInit {
 
-  favorites: Favorite;
+  favorites = {
+    user: '',
+    dishes: []
+  };
+
   delete: boolean;
   errMess: string;
+  favorite: FavDish;
 
-  constructor(private favoriteService: FavoriteService, @Inject('BaseURL') private baseURL) { }
+  constructor(private favoriteService: FavoriteService, private dishservice: DishService) { }
 
   ngOnInit() {
-    const myFavorites = this.favoriteService.getFavorites();
-    if (myFavorites) {
-      myFavorites.subscribe(
-        favorites => this.favorites = favorites, 
-        errmess => this.errMess = <any>errmess
-      );
-    }
+    this.favoriteService.getFavorites().subscribe(favorites => {
+      this.favorites = {
+        user: '',
+        dishes: []
+      };
+      favorites.forEach(favorite => this.dishservice.getDish(favorite.dish).subscribe(dish => this.favorites.dishes.push(dish)));
+    }, errmess => this.errMess = <any>errmess);
   }
 
   deleteFavorite(id: string) {
-    console.log('Deleting Dish ' + id);
-    this.favoriteService.deleteFavorite(id)
-      .subscribe(
-        favorites => this.favorites = <Favorite>favorites,
-        errmess => this.errMess = <any>errmess
-      );
+    this.favoriteService.deleteFavorite(id);
     this.delete = false;
   }
 

@@ -3,8 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { MatCardModule, MatProgressSpinnerModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
-import { baseURL } from '../shared/baseurl';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from 'src/environments/environment';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -17,13 +20,10 @@ describe('HomeComponent', () => {
         MatCardModule,
         MatProgressSpinnerModule,
         HttpClientModule,
-        BrowserAnimationsModule
-      ],
-      providers: [
-        {
-          provide: 'BaseURL',
-          withValue: baseURL
-        }
+        BrowserAnimationsModule,
+        AngularFirestoreModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule
       ]
     })
     .compileComponents();

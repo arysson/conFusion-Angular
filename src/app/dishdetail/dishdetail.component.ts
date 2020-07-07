@@ -27,6 +27,7 @@ import { FavoriteService } from '../services/favorite.service';
 export class DishdetailComponent implements OnInit {
 
   dish: Dish;
+  dishcopy: Dish;
   dishIds: string[];
   prev: string;
   next: string;
@@ -53,7 +54,6 @@ export class DishdetailComponent implements OnInit {
     private location: Location, 
     private fb: FormBuilder,
     private favoriteService: FavoriteService,
-    @Inject('BaseURL') private baseURL
   ) {}
 
   ngOnInit() {
@@ -72,16 +72,13 @@ export class DishdetailComponent implements OnInit {
       .subscribe(
         dish => {
           this.dish = dish;
+          this.dishservice.getComments(this.dish._id).subscribe(comments => this.dish.comments = comments);
           this.setPrevNext(dish._id);
           this.visibility = 'shown';
-          this.favoriteService.isFavorite(this.dish._id)
-            .subscribe(
-              resp => {
-                console.log(resp);
-                this.favorite = <boolean>resp.exists;
-              },
-              err => console.log(err)
-            );
+          this.favoriteService.isFavorite(this.dish._id).then(value => {
+            this.favorite = value;
+            console.log('Dishdetail favorite', this.favorite);
+          });
         }, 
         errmess => this.errMess = <any>errmess
       );
@@ -130,8 +127,7 @@ export class DishdetailComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dishservice.postComment(this.dish._id, this.commentForm.value)
-      .subscribe(dish => this.dish = <Dish>dish);
+    this.dishservice.postComment(this.dish._id, this.commentForm.value).then(() => this.dishservice.getComments(this.dish._id).subscribe(comments => this.dish.comments = comments), err => console.log('Error', err));
     this.commentFormDirective.resetForm();
     this.commentForm.reset({
       rating: 5,
@@ -141,11 +137,10 @@ export class DishdetailComponent implements OnInit {
 
   addToFavorites() {
     if (!this.favorite) {
-      this.favoriteService.postFavorite(this.dish._id)
-        .subscribe(favorites => {
-          console.log(favorites);
-          this.favorite = true;
-        });
+      this.favoriteService.postFavorite(this.dish._id).then(favorites => {
+        console.log(favorites);
+        this.favorite = true;
+      }).catch(err => console.log('Error', err));
     }
   }
 }
