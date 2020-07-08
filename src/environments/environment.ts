@@ -3,17 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  firebase: {
-    apiKey: "AIzaSyAflHv4xtTj8EeT1MXJsZawXIDkxehkw3Y",
-    authDomain: "confusionserver-40ed6.firebaseapp.com",
-    databaseURL: "https://confusionserver-40ed6.firebaseio.com",
-    projectId: "confusionserver-40ed6",
-    storageBucket: "confusionserver-40ed6.appspot.com",
-    messagingSenderId: "172515783458",
-    appId: "1:172515783458:web:1cff8d17b1ab6b9aff2b7b",
-    measurementId: "G-NL84J9Y4BZ"
-  }
+  // firebase: {
+  //   apiKey: "AIzaSyAflHv4xtTj8EeT1MXJsZawXIDkxehkw3Y",
+  //   authDomain: "confusionserver-40ed6.firebaseapp.com",
+  //   databaseURL: "https://confusionserver-40ed6.firebaseio.com",
+  //   projectId: "confusionserver-40ed6",
+  //   storageBucket: "confusionserver-40ed6.appspot.com",
+  //   messagingSenderId: "172515783458",
+  //   appId: "1:172515783458:web:1cff8d17b1ab6b9aff2b7b",
+  //   measurementId: "G-NL84J9Y4BZ"
+  // },
+  production: false
 };
 
 /*

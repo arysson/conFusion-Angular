@@ -12,10 +12,10 @@
       <mat-grid-list cols="2" rowHeight="200px">
         <mat-grid-tile *ngFor="let dish of favorites.dishes">
           <div [routerLink]="['/dishdetail', dish._id]" appHighlight>
-            <img height="200px" src="{{ dish.image }}" alt="{{ dish.name }}">
+            <img height="200px" src="{{ baseURL + '/' + favorite.dishes.image }}" alt="{{ favorite.dishes.name }}">
           </div>
           <mat-grid-tile-footer>
-            <h1 mat-line>{{ dish.name | uppercase }}</h1>
+            <h1 mat-line>{{ favorite.dishes.name | uppercase }}</h1>
             <span class="flex-spacer"></span>
             <button mat-icon-button *ngIf="delete" (click)="deleteFavorite(dish._id)">
               <span style="color: red;" class="fa fa-times fa-lg"></span>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { AuthService } from '../services/auth.service';
+import { CustomerApi } from '../shared/sdk';
 
 @Component({
   selector: 'app-login',
@@ -16,20 +16,25 @@ export class LoginComponent implements OnInit {
   };
   errMess: string;
 
-  constructor(public dialogRef: MatDialogRef<LoginComponent>, private authService: AuthService) { }
+  constructor(public dialogRef: MatDialogRef<LoginComponent>, private authService: CustomerApi) { }
 
   ngOnInit() {
   }
 
   onSubmit() {
     console.log('User:', this.user);
-    this.authService.logIn(this.user);
-    this.dialogRef.close();
+    this.authService.login({
+      username: this.user.username,
+      password: this.user.password
+    }, 'User', this.user.remember).subscribe(res => {
+      if (res.user) {
+        this.dialogRef.close(res.user);
+      } else {
+        console.log(res);
+      }
+    }, error => {
+      console.log(error);
+      this.errMess = error;
+    });
   }
-
-  googleLogin() {
-    this.authService.googleLogin();
-    this.dialogRef.close();
-  }
-
 }

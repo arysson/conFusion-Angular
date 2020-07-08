@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { flyInOut, expand } from '../animations/app.animation';
-import { Favorite, FavDish } from '../shared/favorite';
-import { FavoriteService } from '../services/favorite.service';
-import { DishService } from '../services/dish.service';
+import { Customer, FavoriteApi, CustomerApi, Favorite } from '../shared/sdk';
 
 @Component({
   selector: 'app-favorites',
@@ -20,29 +18,31 @@ import { DishService } from '../services/dish.service';
 })
 export class FavoritesComponent implements OnInit {
 
-  favorites = {
-    user: '',
-    dishes: []
-  };
-
+  favorites: Favorite = undefined;
+  customer: Customer = undefined;
   delete: boolean;
   errMess: string;
-  favorite: FavDish;
 
-  constructor(private favoriteService: FavoriteService, private dishservice: DishService) { }
+  constructor(private favoriteService: FavoriteApi, private authService: CustomerApi, @Inject('baseURL') private baseURL) { }
 
   ngOnInit() {
-    this.favoriteService.getFavorites().subscribe(favorites => {
-      this.favorites = {
-        user: '',
-        dishes: []
-      };
-      favorites.forEach(favorite => this.dishservice.getDish(favorite.dish).subscribe(dish => this.favorites.dishes.push(dish)));
-    }, errmess => this.errMess = <any>errmess);
+    this.customer = this.authService.getCachedCurrent();
+    if (this.customer) {
+      this.authService.getFavorites(this.customer.id, {
+        include: ['dishes']
+      }).subscribe((favorites: Favorite) => {
+        console.log(favorites);
+        this.favorites = favorites;
+      }, errmess => this.errMess = <any>errmess);
+    } else {
+      this.errMess = 'No User Logged in!';
+    }
   }
 
   deleteFavorite(id: string) {
-    this.favoriteService.deleteFavorite(id);
+    this.favoriteService.deleteById(id).subscribe(() => this.authService.getFavorites(this.customer.id, {
+      include: ['dishes']
+    }).subscribe((favorites: Favorite) => this.favorites = favorites), errmess => this.errMess = <any>errmess);
     this.delete = false;
   }
 

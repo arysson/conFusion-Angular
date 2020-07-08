@@ -8,6 +8,8 @@ import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from 'src/environments/environment';
+import { LeadersApi, SDKBrowserModule } from '../shared/sdk';
+import { baseURL } from '../shared/baseUrl';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -23,7 +25,13 @@ describe('AboutComponent', () => {
         HttpClientModule,
         BrowserAnimationsModule,
         AngularFirestoreModule,
-        AngularFireModule.initializeApp(environment.firebase)
+        SDKBrowserModule.forRoot()
+      ],
+      providers: [
+        {
+          provide: 'baseURL',
+          useValue: baseURL
+        }
       ]
     })
     .compileComponents();

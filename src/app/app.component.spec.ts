@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireModule } from 'angularfire2';
 import { environment } from 'src/environments/environment';
+import { SDKBrowserModule } from './shared/sdk';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -53,7 +54,7 @@ describe('AppComponent', () => {
         FormsModule,
         HttpClientModule,
         AngularFireAuthModule,
-        AngularFireModule.initializeApp(environment.firebase)
+        SDKBrowserModule.forRoot()
       ]
     }).compileComponents();
   }));

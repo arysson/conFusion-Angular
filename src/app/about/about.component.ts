@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Leader } from '../shared/leader';
-import { LeaderService } from '../services/leader.service';
 import { flyInOut, expand } from '../animations/app.animation';
+import { Leaders, LeadersApi, LoopBackConfig } from '../shared/sdk';
+import { API_VERSION } from '../shared/baseUrl';
 
 @Component({
   selector: 'app-about',
@@ -19,17 +19,18 @@ import { flyInOut, expand } from '../animations/app.animation';
 })
 export class AboutComponent implements OnInit {
 
-  leaders: Leader[];
+  leaders: Leaders[];
   errMess: string;
   
-  constructor(
-    private leaderService: LeaderService,
-  ) { }
+  constructor(private leaderService: LeadersApi, @Inject('baseURL') private baseURL) { 
+    LoopBackConfig.setBaseURL(baseURL);
+    LoopBackConfig.setApiVersion(API_VERSION);
+  }
 
   ngOnInit() {
-    this.leaderService.getLeaders()
+    this.leaderService.find()
       .subscribe(
-        leaders => this.leaders = leaders,
+        (leaders: Leaders[]) => this.leaders = leaders,
         errmess => this.errMess = <any>errmess
       );
   }

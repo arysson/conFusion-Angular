@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireModule } from 'angularfire2';
 import { environment } from 'src/environments/environment';
+import { SDKBrowserModule } from '../shared/sdk';
 
 describe('AuthGuardService', () => {
   beforeEach(() => TestBed.configureTestingModule({
@@ -13,7 +14,7 @@ describe('AuthGuardService', () => {
       HttpClientModule,
       RouterTestingModule.withRoutes([]),
       AngularFireAuthModule,
-      AngularFireModule.initializeApp(environment.firebase)
+      SDKBrowserModule.forRoot()
     ],
     providers: [
       AuthGuardService

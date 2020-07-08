@@ -22,10 +22,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { DishService } from './services/dish.service';
-import { LeaderService } from './services/leader.service';
-import { PromotionService } from './services/promotion.service';
-
 import { AboutComponent } from './about/about.component';
 import { AppComponent } from './app.component';
 import { ContactComponent } from './contact/contact.component';
@@ -37,13 +33,9 @@ import { LoginComponent } from './login/login.component';
 import { MenuComponent } from './menu/menu.component';
 import { HighlightDirective } from './directives/highlight.directive';
 import { FavoritesComponent } from './favorites/favorites.component';
-import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
-import { FavoriteService } from './services/favorite.service';
-import { AngularFireModule } from 'angularfire2';
-import { environment } from 'src/environments/environment';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import { SDKBrowserModule } from './shared/sdk';
+import { baseURL } from './shared/baseUrl';
 
 @NgModule({
   declarations: [
@@ -60,9 +52,6 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
     FavoritesComponent
   ],
   imports: [
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule.enablePersistence(),
-    AngularFireAuthModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
@@ -82,15 +71,15 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
     MatSliderModule,
     MatSlideToggleModule,
     MatToolbarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SDKBrowserModule.forRoot()
   ],
   providers: [
-    AuthService,
     AuthGuardService,
-    DishService,
-    FavoriteService,
-    LeaderService,
-    PromotionService
+    {
+      provide: 'baseURL',
+      useValue: baseURL
+    }
   ],
   entryComponents: [LoginComponent],
   bootstrap: [AppComponent]

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Dish } from '../shared/dish';
-import { DishService } from '../services/dish.service';
 import { flyInOut, expand } from '../animations/app.animation';
+import { DishesApi, LoopBackConfig, Dishes } from '../shared/sdk';
+import { API_VERSION } from '../shared/baseUrl';
 
 @Component({
   selector: 'app-menu',
@@ -19,23 +19,19 @@ import { flyInOut, expand } from '../animations/app.animation';
 })
 export class MenuComponent implements OnInit {
 
-  dishes: Dish[];
+  dishes: Dishes[];
   errMess: string;
-  selectedDish: Dish;
 
-  constructor(
-    private dishService: DishService
-  ) { }
-
-  ngOnInit() {
-    this.dishService.getDishes()
-      .subscribe(
-        dishes => this.dishes = dishes,
-        errmess => this.errMess = <any>errmess
-      );
+  constructor(private dishService: DishesApi, @Inject('baseURL') private baseURL) { 
+    LoopBackConfig.setBaseURL(baseURL);
+    LoopBackConfig.setApiVersion(API_VERSION);
   }
 
-  onSelect(dish: Dish) {
-    this.selectedDish = dish;
+  ngOnInit() {
+    this.dishService.find()
+      .subscribe(
+        (dishes: Dishes[]) => this.dishes = dishes,
+        errmess => this.errMess = <any>errmess
+      );
   }
 }

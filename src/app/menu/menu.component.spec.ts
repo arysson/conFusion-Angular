@@ -4,26 +4,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MenuComponent } from './menu.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { Dish } from '../shared/dish';
-import { DishService } from '../services/dish.service';
-import { DISHES } from '../shared/dishes';
 import { Observable , of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DishesApi, SDKBrowserModule } from '../shared/sdk';
+import { baseURL } from '../shared/baseUrl';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
   let fixture: ComponentFixture<MenuComponent>;
 
   beforeEach(async(() => {
-    const dishServiceStub = {
-      getDishes: function(): Observable<Dish[]> {
-        return of(DISHES);
-      }
-    };
-
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -33,19 +26,18 @@ describe('MenuComponent', () => {
         RouterTestingModule.withRoutes([{
           path: 'menu',
           component: MenuComponent
-        }])
+        }]),
+        SDKBrowserModule.forRoot()
       ],
       declarations: [ MenuComponent ],
       providers: [
         {
-          provide: DishService,
-          useValue: dishServiceStub
+          provide: 'baseURL',
+          useValue: baseURL
         }
       ]
     })
     .compileComponents();
-
-    const dishservice = TestBed.get(DishService);
   }));
 
   beforeEach(() => {
@@ -59,17 +51,21 @@ describe('MenuComponent', () => {
   });
 
   it('dishes items should be 4', () => {
-    expect(component.dishes.length).toBe(4);
-    expect(component.dishes[1].name).toBe('Zucchipakoda');
-    expect(component.dishes[3].featured).toBeFalsy();
+    setTimeout(() => {
+      expect(component.dishes.length).toBe(4);
+      expect(component.dishes[1].name).toBe('Zucchipakoda');
+      expect(component.dishes[3].featured).toBeFalsy();
+    }, 0);
   });
 
   it('should use dishes in the template', () => {
-    fixture.detectChanges();
-    let de: DebugElement;
-    let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('h1'));
-    el = de.nativeElement;
-    expect(el.textContent).toContain(DISHES[0].name.toUpperCase());
+    setTimeout(() => {
+      fixture.detectChanges();
+      let de: DebugElement;
+      let el: HTMLElement;
+      de = fixture.debugElement.query(By.css('h1'));
+      el = de.nativeElement;
+      expect(el.textContent).toContain('UTHAPPIZZA');
+    }, 0);
   });
 });

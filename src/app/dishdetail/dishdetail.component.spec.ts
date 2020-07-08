@@ -10,6 +10,8 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireModule } from 'angularfire2';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { SDKBrowserModule } from '../shared/sdk';
+import { baseURL } from '../shared/baseUrl';
 
 describe('DishdetailComponent', () => {
   let component: DishdetailComponent;
@@ -34,8 +36,14 @@ describe('DishdetailComponent', () => {
         HttpClientModule,
         BrowserAnimationsModule,
         AngularFirestoreModule,
-        AngularFireModule.initializeApp(environment.firebase),
-        AngularFireAuthModule
+        AngularFireAuthModule,
+        SDKBrowserModule.forRoot()
+      ],
+      providers: [
+        {
+          provide: 'baseURL',
+          useValue: baseURL
+        }
       ]
     })
     .compileComponents();

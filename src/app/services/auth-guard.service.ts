@@ -1,27 +1,16 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from './auth.service';
+import { CustomerApi } from '../shared/sdk';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuardService implements CanActivate {
 
-  private currentUser: firebase.User = null;
-
-  constructor(public auth: AuthService, public router: Router) { 
-    this.auth.getAuthState().subscribe(user => {
-      if (user) {
-        // User is signed in.
-        this.currentUser = user;
-      } else {
-        this.currentUser = null;
-      }
-    });
-  }
+  constructor(public authService: CustomerApi, public router: Router) { }
 
   canActivate(): boolean {
-    if (!this.currentUser) {
+    if (!this.authService.getCachedCurrent()) {
       this.router.navigate(['home']);
       return false;
     }

@@ -1,11 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Dish } from '../shared/dish';
-import { DishService } from '../services/dish.service';
-import { Promotion } from '../shared/promotion';
-import { PromotionService } from '../services/promotion.service';
-import { Leader } from '../shared/leader';
-import { LeaderService } from '../services/leader.service';
 import { flyInOut, expand } from '../animations/app.animation';
+import { Dishes, Promotions, Leaders, DishesApi, PromotionsApi, LeadersApi, LoopBackConfig } from '../shared/sdk';
+import { API_VERSION } from '../shared/baseUrl';
 
 @Component({
   selector: 'app-home',
@@ -23,33 +19,41 @@ import { flyInOut, expand } from '../animations/app.animation';
 })
 export class HomeComponent implements OnInit {
 
-  dish: Dish;
-  promotion: Promotion;
-  leader: Leader;
+  dish: Dishes;
+  promotion: Promotions;
+  leader: Leaders;
   dishErrMess: string;
   promotionErrMess: string;
   leaderErrMess: string;
   
-  constructor(
-    private dishservice: DishService, 
-    private promotionservice: PromotionService, 
-    private leaderservice: LeaderService
-  ) { }
+  constructor(private dishservice: DishesApi, private promotionservice: PromotionsApi, private leaderservice: LeadersApi, @Inject('baseURL') private baseURL) { 
+    LoopBackConfig.setBaseURL(baseURL);
+    LoopBackConfig.setApiVersion(API_VERSION);
+  }
 
   ngOnInit() {
-    this.dishservice.getFeaturedDish()
-      .subscribe(
-        dish => this.dish = dish,
+    this.dishservice.findOne({
+      where: {
+        featured: true
+      }
+    }).subscribe(
+        (dish: Dishes) => this.dish = dish,
         errmess => this.dishErrMess = <any>errmess
       );
-    this.promotionservice.getFeaturedPromotion()
-      .subscribe(
-        promotion => this.promotion = promotion,
+    this.promotionservice.findOne({
+      where: {
+        featured: true
+      }
+    }).subscribe(
+        (promotion: Promotions) => this.promotion = promotion,
         errmess => this.promotionErrMess = <any>errmess
       );
-    this.leaderservice.getFeaturedLeader()
-      .subscribe(
-        leader => this.leader = leader,
+    this.leaderservice.findOne({
+      where: {
+        featured: true
+      }
+    }).subscribe(
+        (leader: Leaders) => this.leader = leader,
         errmess => this.leaderErrMess = <any>errmess
       );
   }
