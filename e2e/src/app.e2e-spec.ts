@@ -14,20 +14,24 @@ describe('workspace-project App', () => {
   });
 
   it('should navigate to about us page by clicking on the link', () => {
-    page.navigateTo('/');
-    const navlink = page.getAllElements('a').get(1);
-    navlink.click();
-    expect(page.getParagraphText('h3')).toBe('About Us');
+    setTimeout(() => {
+      page.navigateTo('/');
+      const navlink = page.getAllElements('a').get(1);
+      navlink.click();
+      expect(page.getParagraphText('h3')).toBe('About Us');
+    }, 0);    
   });
 
   it('should enter a new comment for the first dish', () => {
-    page.navigateTo('/dishdetail/0');
-    const newAuthor = page.getElement('input[type=text]');
-    newAuthor.sendKeys('Test Author');
-    const newComment = page.getElement('textarea');
-    newComment.sendKeys('Test Comment');
-    const newSubmitButton = page.getElement('button[type=submit]');
-    newSubmitButton.click();
-    browser.pause();
+    setTimeout(() => {
+      page.navigateTo('/dishdetail/0');
+      const newAuthor = page.getElement('input[type=text]');
+      newAuthor.sendKeys('Test Author');
+      const newComment = page.getElement('textarea');
+      newComment.sendKeys('Test Comment');
+      const newSubmitButton = page.getElement('button[type=submit]');
+      newSubmitButton.click();
+      browser.pause();
+    }, 0);
   });
 });
